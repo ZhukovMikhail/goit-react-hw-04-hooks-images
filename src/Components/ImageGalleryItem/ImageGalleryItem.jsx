@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import fetchImg from '../services/fetch';
 
 export default function ImageGalleryItem({
   querry,
@@ -24,14 +25,9 @@ export default function ImageGalleryItem({
     if (querry === '' || querry === null) {
       return;
     }
-
     setError(false);
     onloading();
-    const USER_KEY = '22985243-b477986a48324befacd1d8a65';
-    fetch(
-      `https://pixabay.com/api/?q=${querry}&page=${page}&key=${USER_KEY}&image_type=photo&orientation=horizontal&per_page=12`,
-    )
-      .then(r => r.json())
+    fetchImg(querry, page)
       .then(r => {
         setImages([...images, ...r.hits]);
         setTotalHits(r.totalHits);
